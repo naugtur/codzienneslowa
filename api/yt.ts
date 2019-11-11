@@ -1,8 +1,8 @@
 import ytdl from 'ytdl-core'
-import * as myCache from 'safe-memory-cache/map'
+import safeMemoryCache from 'safe-memory-cache'
 import { NowRequest, NowResponse } from '@now/node'
 
-const cache = myCache({
+const cache = safeMemoryCache({
     limit: 100
 })
 
