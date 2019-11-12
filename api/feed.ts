@@ -19,7 +19,9 @@ type YtInfo = {
 }
 
 
-const plCzytanie = 'PLFn1VIsptN2J2682cVnbQ39SOuiUgt3u4'
+const plCzytanieE = 'PLFn1VIsptN2J2682cVnbQ39SOuiUgt3u4'
+const plCzytanie1 = 'PLFn1VIsptN2L2CEJAFV9udicClIF2myUf'
+const plCzytanie2 = 'PLFn1VIsptN2LGrFYKkOqOQL2yhGoP4xV8'
 const plChlebak = 'PLRSGEZKuzW-5VWfGU8FuYTNV1rd6p7-7C'
 const plEwangeliarz = 'PLRSGEZKuzW-6-jQIswd49mjBLqpiKJpsF'
 const plCNN = 'PLVdrvbY9AVQrHZyAaXHTJf4d4yVXCGAqq'
@@ -45,16 +47,20 @@ function ytGetPlaylistGuess(playlist: string): Promise<YtInfo> {
     })
 }
 
+const flatten = arr => [].concat(...arr);
+
 //ZEIT Smart CDN should not allow this to be called more than once per hour, so no caching here
 function getPlaylistItems({ selfURL }) {
     return Promise.all([
-        ytGetPlaylistFirst2(plCzytanie),
+        ytGetPlaylistFirst2(plCzytanieE),
+        ytGetPlaylistFirst2(plCzytanie1),
+        ytGetPlaylistFirst2(plCzytanie2),
         ytGetPlaylistGuess(plChlebak),
         ytGetPlaylistLast(plEwangeliarz),
         ytGetPlaylistGuess(plCNN)
     ])
-        .then(([items, ...moreItems]) => {
-            items = items.concat(moreItems)
+        .then((results) => {
+            const items = flatten(results);
             let feed = new RSS({
                 title: 'Czytanie z komentarzem',
                 description: 'Czytanie z MaskacjuszTV, komentarze z Dominikanie.pl',
