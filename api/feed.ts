@@ -90,7 +90,7 @@ export default (req: NowRequest, res: NowResponse) => {
 
     return getPlaylistItems({ selfURL }).then(feedXML => {
         res.setHeader('content-type', 'application/rss+xml')
-        res.setHeader('cache-control', 'max-age=3600, stale-while-revalidate')
+        res.setHeader('cache-control', 's-maxage=3600')
         res.send(feedXML)
     })
 }
