@@ -18,47 +18,47 @@ type YtInfo = {
     };
 }
 
+const sources = [
+    {
+        sourceId: 'https://www.youtube.com/channel/UCLlzlc4XSItHVTcMnrIlv1w',
+        regex: /ewangeliarzop|chlebak|dominikanie na niedziel/gi,
+        limit: 10
+    },
+    {
+        sourceId: 'PLFn1VIsptN2J2682cVnbQ39SOuiUgt3u4',
+        limit: 2
+    },
+    {
+        sourceId: 'PLFn1VIsptN2L2CEJAFV9udicClIF2myUf',
+        limit: 2
+    },
+    {
+        sourceId: 'PLFn1VIsptN2LGrFYKkOqOQL2yhGoP4xV8',
+        limit: 2
+    },
+    {
+        sourceId: 'https://www.youtube.com/channel/UCme4ZOv65uzGADXuvtHkSvA',
+        regex: /CNN/gi,
+        limit: 10
+    }
+]
 
-const plCzytanieE = 'PLFn1VIsptN2J2682cVnbQ39SOuiUgt3u4'
-const plCzytanie1 = 'PLFn1VIsptN2L2CEJAFV9udicClIF2myUf'
-const plCzytanie2 = 'PLFn1VIsptN2LGrFYKkOqOQL2yhGoP4xV8'
-const plChlebak = 'PLRSGEZKuzW-5VWfGU8FuYTNV1rd6p7-7C'
-const plEwangeliarz = 'PLRSGEZKuzW-6-jQIswd49mjBLqpiKJpsF'
-const plCNN = 'PLVdrvbY9AVQrHZyAaXHTJf4d4yVXCGAqq'
-
-function ytGetPlaylistFirst2(playlist: string): Promise<Array<YtInfo>> {
-    return ytpl(playlist, { limit: 2 }).then(info => info.items)
-}
-function ytGetPlaylistLast(playlist: string): Promise<YtInfo> {
-    return ytpl(playlist, { limit: 0 }).then(info => info.items[info.items.length - 1])
-}
-function ytGetPlaylistGuess(playlist: string): Promise<YtInfo> {
-    return ytpl(playlist, { limit: 0 }).then(info => {
-        const last = info.items[info.items.length - 1]
-        const first = info.items[0]
-        const firstMatch = first.title.match(/([0-9]+)/g)
-        const lastMatch = last.title.match(/([0-9]+)/g)
-        // console.log(first.title, firstMatch, parseInt(firstMatch[0], 10), last.title, lastMatch, parseInt(lastMatch[0], 10))
-        if (parseInt(firstMatch[0], 10) < parseInt(lastMatch[0], 10)) {
-            return last
-        } else {
-            return first
-        }
-    })
+function ytGet({ sourceId, regex, limit }): Promise<Array<YtInfo>> {
+    return ytpl(sourceId, { limit: limit })
+        // .then(a => { console.log(a); return a })
+        .then(info => {
+            if (regex) {
+                return info.items.filter(item => item.title.match(regex))
+            }
+            return info.items
+        })
 }
 
 const flatten = arr => [].concat(...arr);
 
 //ZEIT Smart CDN should not allow this to be called more than once per hour, so no caching here
 function getPlaylistItems({ selfURL }) {
-    return Promise.all([
-        ytGetPlaylistFirst2(plCzytanieE),
-        ytGetPlaylistFirst2(plCzytanie1),
-        ytGetPlaylistFirst2(plCzytanie2),
-        ytGetPlaylistGuess(plChlebak),
-        ytGetPlaylistLast(plEwangeliarz),
-        ytGetPlaylistGuess(plCNN)
-    ])
+    return Promise.all(sources.map(ytGet))
         .then((results) => {
             const items = flatten(results);
             let feed = new RSS({
