@@ -21,7 +21,7 @@ type YtInfo = {
 const sources = [
     {
         sourceId: 'https://www.youtube.com/channel/UCLlzlc4XSItHVTcMnrIlv1w',
-        regex: /ewangeliarzop|chlebak|dominikanie na niedziel/gi,
+        regex: /ewangeliarzop|chlebak|dominikanie na niedziel|poczekalnia/gi,
         limit: 10
     },
     {
@@ -38,7 +38,7 @@ const sources = [
     },
     {
         sourceId: 'https://www.youtube.com/channel/UCme4ZOv65uzGADXuvtHkSvA',
-        regex: /CNN/gi,
+        regex: /CNN|Ogrody/gi,
         limit: 10
     }
 ]
