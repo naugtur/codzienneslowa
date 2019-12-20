@@ -11,9 +11,11 @@ function getVidInfo(vid) {
     if (!ytInfo) {
         console.log(`populating cache for ${vid}`)
         ytInfo = ytdl.getInfo(`https://www.youtube.com/watch?v=${vid}`)
-            .then(info =>
-                ytdl.filterFormats(info.formats, f => f.container === 'm4a')[0]
-            )
+            .then(info => {
+                const formats = ytdl.filterFormats(info.formats, 'audioonly')
+                const prefered = formats.filter(f => f.container.match(/mp4|m4a/))[0]
+                return prefered || formats[0]
+            })
         cache.set(vid, ytInfo)
     } else {
         console.log(`using cache for ${vid}`)
@@ -32,6 +34,7 @@ export default (req: NowRequest, res: NowResponse) => {
                 console.log(`no audio matches for ${vid}`)
                 return res.status(404).end()
             }
+            console.log(audioInfo)
             res.status(302).setHeader('location', audioInfo.url)
             res.end()
         })
