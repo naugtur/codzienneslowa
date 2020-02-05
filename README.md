@@ -24,6 +24,9 @@ odpalanie lokalnie:
 npm install -g now
 now dev
 ```
+```
+curl http://localhost:3000/api/feed | xmllint --format - | less
+```
 
 *a test jest tylko po to, żeby greenkeeper mógł podbijać biblioteki youtubowe*
 
