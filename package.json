@@ -15,7 +15,7 @@
     "@now/node": "^1.4.0",
     "rss": "^1.2.2",
     "safe-memory-cache": "^2.0.0",
-    "ytdl-core": "^1.0.7",
+    "ytdl-core": "^2.0.0",
     "ytpl": "^0.1.20"
   }
 }
