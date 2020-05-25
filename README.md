@@ -1,6 +1,6 @@
 # Codzienne Słowa
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/naugtur/codzienneslowa.svg)](https://greenkeeper.io/)
+
 
 Czytanie z MaskacjuszTV i komentarze z Dominikanie.pl dostępne jako podcast RSS.
 
