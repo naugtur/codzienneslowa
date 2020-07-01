@@ -2,6 +2,8 @@ import ytpl from 'ytpl'
 import RSS from 'rss'
 import { NowRequest, NowResponse } from '@now/node'
 
+const ytURL = "https://handsfreeyoutube.now.sh/"
+
 type YtInfo = {
     id: string;
     url: string;
@@ -77,8 +79,8 @@ function getPlaylistItems({ selfURL }) {
             items.forEach(item => {
                 feed.item({
                     title: item.title,
-                    enclosure: { url: `${selfURL}api/yt?v=${item.id}`, type: 'audio/mp4', length: human2seconds(item.duration) },
-                    url: `${selfURL}api/yt?v=${item.id}`,
+                    enclosure: { url: `${ytURL}api/yt?v=${item.id}`, type: 'audio/mp4', length: human2seconds(item.duration) },
+                    url: `${ytURL}api/yt?v=${item.id}`,
                 })
             })
 
