@@ -23,7 +23,7 @@ type YtInfo = {
 const sources = [
     {
         sourceId: 'https://www.youtube.com/channel/UCLlzlc4XSItHVTcMnrIlv1w',
-        regex: /ewangeliarzop|chlebak|dominikanie na niedziel|poczekalnia/gi,
+        regex: /ewangeliarzop|chlebak|dominikanie na niedziel/gi,
         limit: 10
     },
     {
@@ -40,14 +40,13 @@ const sources = [
     },
     {
         sourceId: 'https://www.youtube.com/channel/UCme4ZOv65uzGADXuvtHkSvA',
-        regex: /CNN|Ogrody/gi,
+        regex: /CNN|Rekolekcje/gi,
         limit: 10
     }
 ]
 
 function ytGet({ sourceId, regex, limit }): Promise<Array<YtInfo>> {
     return ytpl(sourceId, { limit: limit })
-        // .then(a => { console.log(a); return a })
         .then(info => {
             if (regex) {
                 return info.items.filter(item => item.title.match(regex))
@@ -56,13 +55,23 @@ function ytGet({ sourceId, regex, limit }): Promise<Array<YtInfo>> {
         })
 }
 
-const flatten = arr => [].concat(...arr);
+export const zip = sources => {
+    let result = [];
+    let slice;
+
+    do {
+        slice = sources.map(source => source.shift()).filter(i => i)
+        result = result.concat(slice)
+    } while (slice.length)
+
+    return result;
+};
 
 //ZEIT Smart CDN should not allow this to be called more than once per hour, so no caching here
 function getPlaylistItems({ selfURL }) {
     return Promise.all(sources.map(ytGet))
         .then((results) => {
-            const items = flatten(results);
+            const items = zip(results);
             let feed = new RSS({
                 title: 'Czytanie z komentarzem',
                 description: 'Czytanie z MaskacjuszTV, komentarze z Dominikanie.pl',
@@ -79,18 +88,22 @@ function getPlaylistItems({ selfURL }) {
             items.forEach(item => {
                 feed.item({
                     title: item.title,
-                    enclosure: { url: `${ytURL}api/yt?v=${item.id}`, type: 'audio/mp4', length: human2seconds(item.duration) },
+                    enclosure: { url: `${ytURL}api/yt?v=${item.id}`, type: 'audio/mp4' },
                     url: `${ytURL}api/yt?v=${item.id}`,
+                    custom_elements: [
+                        {
+                            'itunes:image': {
+                                _attr: {
+                                    href: item.thumbnail
+                                }
+                            }
+                        }
+                    ]
                 })
             })
 
             return feed.xml();
         })
-}
-
-function human2seconds(duration: string): number {
-    // TODO: turn stuff like 4:55 into seconds
-    return 123
 }
 
 export default (req: NowRequest, res: NowResponse) => {
