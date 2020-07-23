@@ -27,16 +27,9 @@ const sources = [
         limit: 10
     },
     {
-        sourceId: 'PLFn1VIsptN2J2682cVnbQ39SOuiUgt3u4',
-        limit: 2
-    },
-    {
-        sourceId: 'PLFn1VIsptN2L2CEJAFV9udicClIF2myUf',
-        limit: 2
-    },
-    {
-        sourceId: 'PLFn1VIsptN2LGrFYKkOqOQL2yhGoP4xV8',
-        limit: 2
+        sourceId: 'https://www.youtube.com/user/Maskacjusz',
+        regex: /Ewangelia|eCzytanie/gi,
+        limit: 10
     },
     {
         sourceId: 'https://www.youtube.com/channel/UCme4ZOv65uzGADXuvtHkSvA',
