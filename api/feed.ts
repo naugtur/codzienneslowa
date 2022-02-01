@@ -2,7 +2,7 @@ import ytpl from 'ytpl'
 import RSS from 'rss'
 import { NowRequest, NowResponse } from '@now/node'
 
-const ytURL = "https://handsfreeyoutube.now.sh/"
+const ytURL = "https://handsfreeyoutube.vercel.app/"
 
 type YtInfo = {
     id: string;
@@ -23,17 +23,17 @@ type YtInfo = {
 const sources = [
     {
         sourceId: 'https://www.youtube.com/channel/UCLlzlc4XSItHVTcMnrIlv1w',
-        regex: /ewangeliarzop|chlebak|dominikanie na niedziel/gi,
+        regex: /ewangeliarzop|dominikanie na niedziel/gi,
         limit: 10
     },
     {
         sourceId: 'https://www.youtube.com/user/Maskacjusz',
-        regex: /Ewangelia|eCzytanie/gi,
+        regex: /Ewangelia/gi,
         limit: 10
     },
     {
         sourceId: 'https://www.youtube.com/channel/UCme4ZOv65uzGADXuvtHkSvA',
-        regex: /CNN|Rekolekcje/gi,
+        regex: /CNN|Rekolekcje|wstawaki/gi,
         limit: 10
     }
 ]
@@ -67,7 +67,7 @@ function getPlaylistItems({ selfURL }) {
             const items = zip(results);
             let feed = new RSS({
                 title: 'Czytanie z komentarzem',
-                description: 'Czytanie z MaskacjuszTV, komentarze z Dominikanie.pl',
+                description: 'Czytanie z MaskacjuszTV, komentarze z Dominikanie.pl i Wstawaki',
                 feed_url: `${selfURL}api/feed`,
                 ttl: '60',
                 custom_namespaces: {
