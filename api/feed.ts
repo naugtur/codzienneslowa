@@ -27,7 +27,7 @@ const sources = [
         limit: 10
     },
     {
-        sourceId: 'https://www.yout>ube.com/user/Maskacjusz',
+        sourceId: 'https://www.youtube.com/user/Maskacjusz',
         regex: /Ewangelia/gi,
         limit: 10
     },
