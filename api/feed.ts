@@ -7,9 +7,9 @@ const ytURL = "https://handsfreeyoutube.vercel.app/"
 type YtInfo = {
     id: string;
     url: string;
-    url_simple: string;
+    url_simple?: string;
     title: string;
-    thumbnail: string;
+    thumbnail?: string;
     duration: string;
     author: {
         id: string;
@@ -27,13 +27,13 @@ const sources = [
         limit: 10
     },
     {
-        sourceId: 'https://www.youtube.com/user/Maskacjusz',
+        sourceId: 'https://www.yout>ube.com/user/Maskacjusz',
         regex: /Ewangelia/gi,
         limit: 10
     },
     {
         sourceId: 'https://www.youtube.com/channel/UCme4ZOv65uzGADXuvtHkSvA',
-        regex: /CNN|Rekolekcje|wstawaki/gi,
+        regex: /CNN|Rekolekcje|wstawaki|medytacje/gi,
         limit: 10
     }
 ]
