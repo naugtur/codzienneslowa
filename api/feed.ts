@@ -33,7 +33,7 @@ const sources = [
     },
     {
         sourceId: 'https://www.youtube.com/channel/UCme4ZOv65uzGADXuvtHkSvA',
-        regex: /CNN|Rekolekcje|wstawaki|medytacje|roraty/gi,
+        regex: /CNN|Rekolekcje|wstawaki|pustynia|medytacje|roraty/gi,
         limit: 10
     }
 ]
